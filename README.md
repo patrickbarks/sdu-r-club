@@ -19,7 +19,7 @@ Materials from monthly meetings of the R Club in Biology at SDU.
 
 #### 2018-11
 - Gesa: using [RStudio Projects](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects)
-- Lio: ??
+- Lio: using [tm package](https://cran.r-project.org/web/packages/tm/index.html), very good intro done by Ingo Feinerer (https://cran.r-project.org/web/packages/tm/vignettes/tm.pdf)
 - Iain: vectorizing functions
 - Rita: ??
 - Patrick: working with factors using [forcats](https://forcats.tidyverse.org/) [[link](2018-11/patrick-forcats.md)]
