@@ -1,0 +1,86 @@
+---
+title: "forcats"
+author: "Patrick Barks"
+date: '2019-01-15'
+output: github_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+[forcats](https://forcats.tidyverse.org/) is a [tidyverse](https://www.tidyverse.org/) package for working with categorical variables (i.e. factors). Sadly, it is has nothing to do with cats.
+
+![](https://www.rforcats.net/assets/img/programmer.png)
+
+### Preliminaries
+
+```{r}
+library(ggplot2)
+library(forcats)
+```
+
+### Load data
+
+```{r}
+compadre <- read.csv("data/compadre_meta.csv", stringsAsFactors = F)
+compadre[1:5, 1:10]
+```
+
+### Counts by OrganismType
+
+```{r}
+table(compadre$OrganismType)
+fct_count(compadre$OrganismType)
+```
+
+### Plot OrganismType counts with default factor levels
+
+```{r}
+ggplot(compadre, aes(x = OrganismType)) +
+  geom_bar() +
+  labs(x = "Organism type", y = "Count")
+```
+
+### Flip it and reverse it (fct_rev)
+
+```{r}
+ggplot(compadre, aes(x = fct_rev(OrganismType))) +
+  geom_bar() +
+  coord_flip() +
+  labs(x = "Organism type", y = "Count")
+```
+
+### Re-order factor levels by frequency (fct_infreq)
+
+```{r}
+compadre$OrganismType <- fct_infreq(compadre$OrganismType)
+
+ggplot(compadre, aes(fct_rev(OrganismType))) +
+  geom_bar() +
+  coord_flip() +
+  labs(x = "Organism type", y = "Count")
+```
+
+### Re-label one of the factor levels (fct_recode)
+
+```{r}
+compadre$OrganismType <- fct_recode(compadre$OrganismType,
+                                    "Herbaceous" = "Herbaceous perennial")
+
+ggplot(compadre, aes(fct_rev(OrganismType))) +
+  geom_bar() +
+  coord_flip() +
+  labs(x = "Organism type", y = "Count")
+```
+
+### Lump uncommon factor levels into 'Other' category (fct_lump)
+
+```{r}
+ggplot(compadre, aes(fct_rev(fct_lump(OrganismType, n = 6)))) +
+  geom_bar() +
+  coord_flip() +
+  labs(x = "Organism type", y = "Count")
+```
