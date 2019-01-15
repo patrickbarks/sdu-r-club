@@ -1,0 +1,248 @@
+---
+title: "Random Effects"
+author: "Patrick Barks"
+date: '2017-09-28'
+output: github_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  fig.path = "img/patrick-random-effects/",
+  collapse = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+
+### Preliminaries
+
+```{r}
+# install.packages(c('dplyr', 'tibble', 'ggplot2', 'gridExtra', 'nlme', 'lme4', 'sjPlot'))
+library(dplyr)
+library(tibble)
+library(ggplot2)
+library(gridExtra)
+library(nlme)
+library(lme4)
+library(sjPlot)
+```
+
+### Generate data with hierarchical structure
+
+```{r, message=FALSE}
+library(dplyr)
+library(tibble)
+
+# testing a hypothesis that fish body condition is associated with parasite load
+# samples from multiple lakes, incl. male vs. female, of varying age
+n_lakes <- 9
+n_traps_per_lake <- 10
+n_fish_per_trap <- 10
+N <- n_lakes * n_traps_per_lake * n_fish_per_trap
+
+sigma_fish <- 1.2
+sigma_alpha_lake <- 2.2
+sigma_beta_lake <- 0.5
+sigma_age <- 2.7
+sigma_trap_within_lake <- 1.7
+
+b_int <- 27.2        # intercept
+b_sex <- -2.5        # fish sex
+b_age <- 0.4         # fish age
+b_parasite <- -1.0   # fish parasite load
+
+dat <- expand.grid(lake_id = paste('Lake', 1:n_lakes),
+                   trap_id = rep(1:n_traps_per_lake, n_fish_per_trap),
+                   stringsAsFactors = F) %>%
+  as_tibble() %>%
+  mutate(trap_id = paste('T', trap_id, as.numeric(as.factor(lake_id)), sep = '-')) %>%
+  arrange(lake_id, trap_id) %>%
+  mutate(sex = sample(c(0:1), N, replace = T),
+         age = rpois(N, 3),
+         parasite = rlnorm(N, 1.5),
+         parasite_log = log(parasite))
+
+lake_df <- tibble(lake_id = sort(unique(dat$lake_id)),
+                  alpha_lake = rnorm(n_lakes, mean = 0, sd = sigma_alpha_lake),
+                  beta_lake = rnorm(n_lakes, mean = 0, sd = sigma_beta_lake))
+
+traps_df <- tibble(trap_id = sort(unique(dat$trap_id)),
+                   alpha_trap = rnorm(n_lakes * n_traps_per_lake, mean = 0, sd = sigma_trap_within_lake))
+
+dat <- dat %>%
+  left_join(lake_df, by = 'lake_id') %>%
+  left_join(traps_df, by = 'trap_id')
+
+X <- as.matrix(cbind(int = 1, dat[,c('sex', 'age', 'parasite_log')]))
+dat$condition <- X %*% c(b_int, b_sex, b_age, b_parasite) + dat$alpha_lake + dat$beta_lake * dat$parasite_log + rnorm(N, 0, sigma_fish)
+```
+
+### Visualize
+
+```{r}
+### visualize data
+head(dat)
+
+ggplot(dat, aes(x = parasite_log, y = condition)) +
+  geom_point()
+# plot(condition ~ parasite_log, dat)
+
+ggplot(dat, aes(x = as.factor(sex), y = condition)) +
+  geom_boxplot()
+# boxplot(condition ~ sex, dat)
+
+ggplot(dat, aes(x = lake_id, y = condition)) +
+  geom_boxplot()
+# boxplot(condition ~ lake_id, dat)
+```
+
+### Simple linear regression, body condition vs. log parasite load
+
+```{r}
+# fit model
+mod1 <- lm(condition ~ parasite_log, data = dat)
+
+# summarize
+summary(mod1)
+anova(mod1)
+
+# check residuals
+dat$resid1 <- resid(mod1)
+
+ggplot(dat, aes(x = lake_id, y = resid1)) +
+  geom_boxplot() +
+  geom_hline(yintercept = 0, linetype = 2)
+
+# examine model fit with ggplot
+ggplot(dat, aes(x = parasite_log, y = condition)) +
+  geom_point(size = 2) +
+  geom_smooth(method = 'lm')
+```
+
+### Add fixed effect intercepts for lake_id
+
+```{r}
+# fit model
+mod2 <- lm(condition ~ lake_id + parasite_log, data = dat)
+
+# summarize
+summary(mod2)
+anova(mod2)
+
+# check residuals
+dat$resid2 <- resid(mod2)
+
+# residuals vs. lake
+ggplot(dat, aes(x = lake_id, y = resid2)) +
+  geom_boxplot() +
+  geom_hline(yintercept = 0, linetype = 2)
+
+ggplot(dat, aes(x = age, y = resid2)) +
+  geom_point() +
+  geom_hline(yintercept = 0, linetype = 2)
+
+# residuals vs. parasite_log within lake
+ggplot(dat, aes(x = parasite_log, y = resid2)) +
+  geom_point() +
+  geom_hline(yintercept = 0, linetype = 2) +
+  facet_grid(sex ~ lake_id)
+```
+
+### Add fixed effect slopes for lake_id (with respect to parasite load)
+
+```{r}
+# fit model
+mod3 <- lm(condition ~ parasite_log*lake_id, data = dat)
+
+# summarize
+summary(mod3)
+anova(mod3)
+
+# check residuals
+dat$resid3 <- resid(mod3)
+ggplot(dat, aes(x = lake_id, y = resid3)) + geom_boxplot()        # resid vs. lake
+ggplot(dat, aes(x = as.factor(sex), y = resid3)) + geom_boxplot() # resid vs. sex
+ggplot(dat, aes(x = age, y = resid3)) + geom_point()              # resid vs. age
+
+# examine model fit with ggplot
+ggplot(dat, aes(x = parasite_log, y = condition, col = lake_id)) +
+  geom_point(size = 2) +
+  geom_smooth(method = 'lm') +
+  scale_color_brewer(palette = 'Dark2') +
+  theme(legend.position = c(0.07, 0.17))
+```
+
+
+### Add in terms for fish age and sex
+
+```{r}
+# fit model
+mod4 <- lm(condition ~ age + sex + parasite_log*lake_id, data = dat)
+
+# summarize
+summary(mod4)$coefficients
+anova(mod4)
+
+# check residuals
+dat$resid4 <- resid(mod4)
+ggplot(dat, aes(lake_id, resid4)) + geom_boxplot()  # resid vs. lake
+ggplot(dat, aes(sex, resid4)) + geom_boxplot()      # resid vs. sex
+ggplot(dat, aes(age, resid4)) + geom_point()        # resid vs. age
+```
+
+### Model as above, but with random intercepts for lake_id (i.e. mixed effect model)
+
+```{r}
+# fit model
+mod5a <- lme(condition ~ age + sex + parasite_log, random = ~ 1 | lake_id, data = dat)
+mod5b <- lmer(condition ~ age + sex + parasite_log + (1 | lake_id), data = dat)
+
+# summarize nlme
+summary(mod5a)
+anova(mod5a)
+
+# summarize lme4 (see: help('pvalues', package = 'lme4'))
+summary(mod5b)
+anova(mod5b)
+drop1(mod5b, test = 'Chisq')
+
+# check random effects
+ranef(mod5a)
+
+# examine distribution describing of random intercepts
+curve(dnorm(x, mean = 27.385716, sd = 3.998522), from = 0, to = 60)
+
+# plot effects
+plot_model(mod5b, type = 're', vars = 'parasite_log')
+plot_model(mod5b, type = 'slope', terms = 'parasite_log', show.ci = T, point.alpha = 1)
+```
+
+### Random intercepts and slopes for lake_id
+
+```{r}
+# fit model
+mod6a <- lme(condition ~ age + sex + parasite_log, random = ~ parasite_log | lake_id, data = dat)
+mod6b <- lmer(condition ~ age + sex + parasite_log + (parasite_log | lake_id), data = dat)
+
+# summarize nlme
+summary(mod6a)
+anova(mod6a)
+
+# check random effects
+ranef(mod6a)
+
+# examine distributions describing random intercepts and slopes
+curve(dnorm(x, mean = 26.512292, sd = 2.912040), from = 0, to = 60)   # random intercepts
+curve(dnorm(x, mean = -1.264316, sd = 2.343843), from = -15, to = 15) # random slopes
+
+# plot effects
+plot_model(mod6b, type = 're')
+plot_model(mod6b, type = 'slope', terms = 'parasite_log')
+
+# confidence intervals
+confint(mod6b, parm = '(Intercept)')
+confint(mod6b, parm = 'parasite_log')
+```
+

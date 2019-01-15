@@ -1,0 +1,57 @@
+---
+title: "package conflicted"
+author: "Gesa"
+date: "1 October 2018"
+output: github_document
+---
+
+<br>
+
+### Install `conflicted`
+
+```{r basic, eval=FALSE}
+install.packages("conflicted")
+```
+
+<br>
+
+### Function conflicts
+
+```{r Without confliced, message=FALSE}
+library(dplyr)
+
+filter(mtcars, cyl ==8)
+```
+
+R will always use the last package loaded when multiple packages with the same function are available; so here it uses `dplyr::filter()` rather than `stats::filter()`
+
+<br>
+
+### Using `conflicted`
+
+```{r With conflicted attached, error=TRUE}
+library(conflicted)
+library(dplyr)
+
+filter(mtcars, cyl ==8)
+```
+
+Should bring an error message, warning about `filter()` being a function in the `dplyr` and the `stats` package
+
+<br>
+
+### Functions in the package
+
+```{r conflict_prefer()}
+conflict_prefer("filter", "dplyr")
+# conflicted will prefer dplyr::filter over any other package in the future
+
+filter(mtcars, cyl ==8)
+#same result as in the beginning, but you can be sure, that it is using dplyr::filter() and not stats::filter()
+```
+
+```{r conflict_scout()}
+
+conflict_scout()
+#shows all possible conflicts in your R session
+```
