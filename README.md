@@ -12,7 +12,7 @@ Materials from monthly meetings of the R Club in Biology at SDU.
 - Patrick: intro to managing projects with [GitHub](https://github.com/)
 
 #### 2018-12
-- Owen: cluster analysis
+- Owen: cluster analysis [[link](2018-12/owen-cluster-analysis.md)]
 - Gesa: intro to [Rmarkdown](https://rmarkdown.rstudio.com/)
 - Iain: [VSCode](https://code.visualstudio.com/) as an alternative to RStudio
 - Iris: followup on intro to [ggplot2](https://ggplot2.tidyverse.org/)

@@ -1,0 +1,76 @@
+---
+title: "Cluster Analysis"
+author: "Owen Jones"
+date: "2018-12-01"
+output: github_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  fig.path = "img/owen-cluster-analysis/"
+)
+```
+
+## Cluster Analysis
+
+Cluster Analysis is a statistical tool for identifying structure in data and identifying groups based on similarity. It is used in various fields and has become known as a central tool in unsupervised machine learning. There are numerous algorithms and this worksheet focuses on a couple of use cases. 
+
+The main function we will use is the `hclust` function from the `stats` package. This package ships with base R, so you should have it available. 
+
+```{r iris data}
+data(iris)
+summary(iris)
+```
+
+## Clustering using the iris dataset
+
+The idea here is that we are experimenting with the clustering algorithm using data where we **do** know something about the structure. In this case, we know what the species are. Will cluster analysis find this structure? Let's plot stuff. 
+
+```{r pressure, echo=FALSE, message=FALSE}
+library(ggplot2)
+library(ggpubr)
+A <- ggplot(iris,aes(Sepal.Length, Sepal.Width,colour = Species)) + 
+geom_point() + theme(legend.position="none")
+B <- ggplot(iris,aes(Petal.Length, Petal.Width,colour = Species)) + 
+geom_point() + theme(legend.position="none")
+ggarrange(A,B)
+```
+
+You can see that there are some clustering here. Let's quantify it by first calculating a distance matrix (`dist`) and then using `hclust` to perform a hierarchical cluster analysis. You can then plot the result with `plot`.
+
+```{r}
+names(iris)
+x <- iris[,3:4]
+x <- dist(x)
+clustResult <- hclust(x,method="average")
+#clustResult <- cluster::agnes(x, stand=FALSE,method = "ward")
+
+plot(clustResult)
+```
+
+Let's cut the tree where we find 3 clusters. You can do this with the `cutree` function.
+```{r}
+iris$clusterID <- cutree(clustResult, 3)
+```
+
+Then we can see how well our cluster analysis has recovered the actual species.
+
+```{r}
+table(iris$clusterID,iris$Species)
+```
+
+Try repeating this with the rest of the data (sepals), and with other algorithms (e.g. `method = "complete"`)
+
+## Comparing...
+
+```{r}
+clustResult2 <- hclust(x,method="ward.D2")
+```
+
+
+```{r}
+dendextend::tanglegram(as.dendrogram(clustResult),as.dendrogram(clustResult2))
+```
