@@ -28,7 +28,7 @@ Materials from monthly meetings of the R Club in Biology at SDU.
 - Gesa: Managing naming conflicts with [conflicted](https://conflicted.r-lib.org/)  [[link](2018-10/gesa-package-conflicted.md)]
 - Iris: Introduction to [ggplot2](https://ggplot2.tidyverse.org/)
 - Patrick: Getting help with a problem on [StackOverflow](https://stackoverflow.com/) [[link](2018-10/patrick-minimal-reproducible-questions.md)]
-- Brian: ??
+- Brian: Nifty but forgettable functions in base R [[link](2018-10/brian-nifty-but-forgettable.md)]
 - Stina: Auto-formatting problems in Excel
 
 ## Ideas for future topics
