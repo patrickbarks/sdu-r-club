@@ -33,21 +33,21 @@ Materials from monthly meetings of the R Club in Biology at SDU.
 - Owen: cluster analysis [[link](2018-12/owen-cluster-analysis.md)]
 - Gesa: intro to [Rmarkdown](https://rmarkdown.rstudio.com/)
 - Iain: [VSCode](https://code.visualstudio.com/) as an alternative to RStudio
-- Iris: followup on intro to [ggplot2](https://ggplot2.tidyverse.org/)
+- Iris: intro to [ggplot2](https://ggplot2.tidyverse.org/) II
 
 #### <a name="2018-11"></a>2018-11
 - Gesa: using [RStudio Projects](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects)
-- Lio: using [tm package](https://cran.r-project.org/web/packages/tm/index.html), very good intro done by Ingo Feinerer (https://cran.r-project.org/web/packages/tm/vignettes/tm.pdf)
+- Lio: text-mining with the [tm package](https://cran.r-project.org/web/packages/tm/index.html) (see also [vignette by Ingo Feinerer](https://cran.r-project.org/web/packages/tm/vignettes/tm.pdf))
 - Iain: vectorizing functions
-- Rita: ??
+- Rita: intro to the [taxize](https://github.com/ropensci/taxize) package
 - Patrick: working with factors using [forcats](https://forcats.tidyverse.org/) [[link](2018-11/patrick-forcats.md)]
 
 #### <a name="2018-10"></a>2018-10
-- Gesa: Managing naming conflicts with [conflicted](https://conflicted.r-lib.org/)  [[link](2018-10/gesa-package-conflicted.md)]
-- Iris: Introduction to [ggplot2](https://ggplot2.tidyverse.org/)
-- Patrick: Getting help with a problem on [StackOverflow](https://stackoverflow.com/) [[link](2018-10/patrick-minimal-reproducible-questions.md)]
-- Brian: Nifty but forgettable functions in base R [[link](2018-10/brian-nifty-but-forgettable.md)]
-- Stina: Auto-formatting problems in Excel
+- Gesa: managing naming conflicts with [conflicted](https://conflicted.r-lib.org/)  [[link](2018-10/gesa-package-conflicted.md)]
+- Iris: introduction to [ggplot2](https://ggplot2.tidyverse.org/) I
+- Patrick: getting help with a problem on [StackOverflow](https://stackoverflow.com/) [[link](2018-10/patrick-minimal-reproducible-questions.md)]
+- Brian: nifty but forgettable functions in base R [[link](2018-10/brian-nifty-but-forgettable.md)]
+- Stina: auto-formatting problems in Excel
 
 
 ## <a name="online-resources"></a>Online resources for R
