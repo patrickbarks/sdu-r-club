@@ -1,0 +1,46 @@
+---
+title: "My presentation title"
+author: "My Name"
+date: 'YYYY-MM-DD'
+output: github_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+This is an R Markdown document formatted for GitHub. When you click the **Knit** button in RStudio, the contents of this document will be 'knitted' into a markdown file (.md), including all the code chunks within the document and their output. Check out the markdown file corresponding to this document, "template.md".
+
+On GitHub, the markdown file will be rendered into an HTML document, formatted according to [GitHub's markdown rules](https://guides.github.com/features/mastering-markdown/).
+
+## This is a header
+
+#### And here's a smaller header
+
+Regular paragraph text can be written directly in the document, like this.
+
+## Including code
+
+You can include R code in the document as follows:
+
+```{r}
+head(mtcars)
+```
+
+## Including figures
+
+You can embed plots generated from R scripts like this:
+
+```{r}
+plot(mpg ~ hp, data = mtcars)
+```
+
+Or, embed an external figure like this:
+
+![](https://www.r-project.org/Rlogo.png)
+
+## Including links
+
+Here's a link to an [R Markdown guide](https://rmarkdown.rstudio.com/lesson-2.html) by RStudio.
