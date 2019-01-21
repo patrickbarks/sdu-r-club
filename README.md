@@ -2,15 +2,15 @@
 SDU Biology R Club
 ==================
 
-Materials from monthly meetings of the R Club in Biology at SDU.
+Material from monthly meetings of the R Club in Biology at SDU.
 
 ## Contents
+- [Info for presenters](#presenter-notes)
 - [Past meetings](#past-meetings)
   - [2019-01](#2019-01)
   - [2018-12](#2018-12)
   - [2018-11](#2018-11)
   - [2018-10](#2018-10)
-- [Online resources for R](#online-resources)
 - [Ideas for future topics](#topic-ideas)
   - [Statistics / modelling](#statistics)
   - [Data visualization](#data-viz)
@@ -19,8 +19,17 @@ Materials from monthly meetings of the R Club in Biology at SDU.
   - [Spatial](#spatial)
   - [Programming](#programming)
   - [Other](#other)
+- [Online resources](#online-resources)
   
 
+
+## <a name="presenter-notes"></a>Info for presenters
+
+The format for presentations is completely flexible. The only rule is that presentations should be limited to 10 minutes (shorter is fine too), unless a longer time-slot is arranged ahead of time (which is perfectly feasable).
+
+Don't worry about repeating material that was previously covered. The universe of statistics and programming is too vast, and our meetings too short and infrequent, for repetition to be a problem.
+
+If your presentation involves written materials (scripts, slides, etc.), it would be great if they could be archived in this repo. R Markdown documents are an ideal way to host such material, because they allow R scripts, their output, and any associated content to be rendered into a single, nicely-formatted HTML document. See a template for an R Markdown presentation [here](template.Rmd), and the resulting markdown document [here](template.md). Note that it's perfectly fine if you don't have the time or desire to use R Markdown.
 
 ## <a name="past-meetings"></a>Past meetings
 
@@ -33,7 +42,7 @@ Materials from monthly meetings of the R Club in Biology at SDU.
 - Owen: cluster analysis [[link](2018-12/owen-cluster-analysis.md)]
 - Gesa: intro to [Rmarkdown](https://rmarkdown.rstudio.com/)
 - Iain: [VSCode](https://code.visualstudio.com/) as an alternative to RStudio
-- Iris: intro to [ggplot2](https://ggplot2.tidyverse.org/) II
+- Iris: intro to [ggplot2](https://ggplot2.tidyverse.org/) (#2)
 
 #### <a name="2018-11"></a>2018-11
 - Gesa: using [RStudio Projects](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects)
@@ -44,24 +53,14 @@ Materials from monthly meetings of the R Club in Biology at SDU.
 
 #### <a name="2018-10"></a>2018-10
 - Gesa: managing naming conflicts with [conflicted](https://conflicted.r-lib.org/)  [[link](2018-10/gesa-package-conflicted.md)]
-- Iris: introduction to [ggplot2](https://ggplot2.tidyverse.org/) I
+- Iris: introduction to [ggplot2](https://ggplot2.tidyverse.org/)  (#1)
 - Patrick: getting help with a problem on [StackOverflow](https://stackoverflow.com/) [[link](2018-10/patrick-minimal-reproducible-questions.md)]
 - Brian: nifty but forgettable functions in base R [[link](2018-10/brian-nifty-but-forgettable.md)]
 - Stina: auto-formatting problems in Excel
 
-
-## <a name="online-resources"></a>Online resources for R
-- [Advanced R](https://adv-r.hadley.nz/) by Hadley Whickham
-- [Quick-R](https://www.statmethods.net/index.html) by DataCamp
-- [R for Data Science](https://r4ds.had.co.nz/) by Grolemund & Wickham
-- [R Programming for Data Science](https://bookdown.org/rdpeng/rprogdatascience/) by Roger Peng
-- [Coding Club Tutorials](https://ourcodingclub.github.io/tutorials/)
-- [RStudio Cheat Sheets](https://www.rstudio.com/resources/cheatsheets/)
-- [Fundamentals of Data Visualization](https://serialmentor.com/dataviz/) by Claus Wilke
-- [UBC Stat545 course materials](http://stat545.com/topics.html) by Jenny Bryan
-
-
 ## <a name="topic-ideas"></a>Ideas for future topics
+
+This list is intended to serve as inspiration for future presenters, but many of the categories may be too broad for a single presentation. For example, instead of presenting on "model validation" broadly, one might present on "model validation for logistic regression models".
 
 ### <a name="statistics"></a>Statistics / modelling
 - model validation / checking assumptions
@@ -127,3 +126,13 @@ Resources: [CRAN Task View: Analysis of Spatial Data](https://cran.r-project.org
 - parallel processing
 - writing R packages [[post by Hilary Parker](https://hilaryparker.com/2014/04/29/writing-an-r-package-from-scratch/), [R Packages by Hadley Wickham](http://r-pkgs.had.co.nz/)]
 
+
+## <a name="online-resources"></a>Online resources
+- [Advanced R](https://adv-r.hadley.nz/) by Hadley Whickham
+- [Quick-R](https://www.statmethods.net/index.html) by DataCamp
+- [R for Data Science](https://r4ds.had.co.nz/) by Grolemund & Wickham
+- [R Programming for Data Science](https://bookdown.org/rdpeng/rprogdatascience/) by Roger Peng
+- [Coding Club Tutorials](https://ourcodingclub.github.io/tutorials/)
+- [RStudio Cheat Sheets](https://www.rstudio.com/resources/cheatsheets/)
+- [Fundamentals of Data Visualization](https://serialmentor.com/dataviz/) by Claus Wilke
+- [UBC Stat545 course materials](http://stat545.com/topics.html) by Jenny Bryan et al.
