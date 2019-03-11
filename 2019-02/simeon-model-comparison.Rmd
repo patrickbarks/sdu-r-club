@@ -1,0 +1,153 @@
+---
+title: "Model(comparison)"
+author: "Simeon"
+date: "2019-02-01"
+output: github_document
+editor_options: 
+  chunk_output_type: console
+---
+
+Normal glm.
+
+```{r, message=FALSE}
+library(ggplot2)
+
+dat = subset(iris, Species == "setosa")
+
+str(dat)
+
+ggplot(dat) +
+  geom_point(aes(Petal.Width, Sepal.Width))
+
+model1 = glm(Sepal.Width ~ Petal.Width, data = dat)
+
+summary(model1)
+
+ggplot(dat) +
+  geom_point(aes(Sepal.Length, Sepal.Width))
+
+model2 = glm(Sepal.Width ~ Sepal.Length, data = dat)
+
+summary(model2)
+
+model0 = glm(Sepal.Width ~ 1, data = dat)
+
+AIC(model0, model1, model2)
+```
+
+Additive and interactive
+
+```{r}
+ggplot(iris) + 
+  geom_point(aes(Sepal.Length, Sepal.Width, colour = Species))
+
+model = glm(Sepal.Width ~ Sepal.Length, data = iris)
+
+summary(model)
+
+model.additive = glm(Sepal.Width ~ Sepal.Length + Species, data = iris)
+
+summary(model.additive)
+
+ggplot(iris) + 
+  geom_point(aes(Sepal.Length, Sepal.Width, colour = Species)) + 
+  geom_line(aes(Sepal.Length, model.additive$fitted.values, colour = Species))
+
+model.interactive = glm(Sepal.Width ~ Sepal.Length * Species, data = iris)
+
+ggplot(iris) + 
+  geom_point(aes(Sepal.Length, Sepal.Width, colour = Species)) + 
+  geom_smooth(aes(Sepal.Length, Sepal.Width, colour = Species), method = glm)
+
+summary(model.interactive)
+
+AIC(model, model.additive, model.interactive)
+```
+
+General linear mixed-effect model.
+
+```{r, message=FALSE}
+library(lme4)
+
+x = rep( rep(c(100, 110, 120), each = 5), 2)
+x = scale(x)
+y = rep(c(0,0,0,0,1,  0,1,1,1,1,  0,1,1,1,1,
+                     0,0,0,1,1,  0,1,1,1,1,  1,1,1,1,1))
+bird = rep(c("blue", "green"), each = 15)
+
+model = glmer(y ~ x + (1|bird), family = "binomial")
+
+summary(model)
+
+data = data.frame(x = x, y = y, bird = bird, fit = fitted(model))
+
+ggplot(data) + 
+  geom_point(aes(x = x, y = y, colour = bird), 
+                          position = position_jitter(w = 0.11, h = 0.1)) +
+  geom_line(aes(x, fit))
+```
+
+```{r, message=FALSE}
+library(ape)
+library(nlme)
+library(phytools)
+library(rgbif)
+library(parallel)
+library(ggplot2)
+library(MASS)
+library(gridExtra)
+
+dat = read.csv2("data/Brains.csv") 
+dat = dat[dat$sex == "f",]
+dat$log.body.weight = log10(dat$body.weight)
+dat$log.brain.size = log10(dat$brain.size)
+
+mytree = read.tree("data/Phylo_pinnipeds.txt")
+plot(mytree)
+mytree = multi2di(mytree)
+
+phyl = data.frame(species = mytree$tip.label)
+row.names(phyl) = mytree$tip.label
+for(i in mytree$tip.label){
+  phyl$log.brain[phyl$species == i] = median(dat$log.brain.size[dat$species == i])
+  phyl$log.body[phyl$species == i] = median(dat$log.body.weight[dat$species == i])
+  phyl$brain[phyl$species == i] = median(dat$brain.size[dat$species == i])
+  phyl$body[phyl$species == i] = median(dat$body.weight[dat$species == i])
+  
+  if(as.vector(dat$family[dat$species == i])[1] == "Phocidae")
+  {phyl$col[phyl$species == i] = 'dodgerblue3'
+  phyl$family[phyl$species == i] = "Phocidae"} 
+  if(as.vector(dat$family[dat$species == i])[1] == "Otariidae")
+  {phyl$col[phyl$species == i] = 'aquamarine4'
+  phyl$family[phyl$species == i] = "Otariidae"}
+  if(as.vector(dat$family[dat$species == i])[1] == "Odobenidae ")
+  {phyl$col[phyl$species == i] = 'Brown'
+  phyl$family[phyl$species == i] = "Odobenidae"}
+}
+
+f = function(i) { 
+  if (any(unlist(strsplit(toString(i),", ")) %in%
+          c("arctic","subarctic","antarctic","subantarctic"))) {
+    "cold"
+  } else {
+    "not cold"
+  }
+}
+
+dat$cold = sapply(dat$occurrence, f)
+phyl$cold = as.factor(
+  sapply(phyl$species, function(x) dat$cold[dat$species == as.character(x)][1])
+)
+
+ggplot(phyl) +
+  geom_boxplot(aes(cold, log.brain, colour = family))
+
+m.null = gls(log.brain ~ 1, data = phyl, correlation = corBrownian(1, mytree))
+m.body = gls(log.brain ~ log.body, data = phyl, correlation = corBrownian(1, mytree))
+m.col.a = gls(log.brain ~ cold + log.body, data = phyl, correlation = corBrownian(1, mytree))
+m.col.i = gls(log.brain ~ cold * log.body, data = phyl, correlation = corBrownian(1, mytree))
+
+AIC(m.null, m.body, m.col.a, m.col.i)
+summary(m.col.i)
+```
+

@@ -7,6 +7,8 @@ Material from monthly meetings of the R Club in Biology at SDU.
 ## Contents
 - [Info for presenters](#presenter-notes)
 - [Past meetings](#past-meetings)
+  - [2019-03](#2019-03)
+  - [2019-02](#2019-02)
   - [2019-01](#2019-01)
   - [2018-12](#2018-12)
   - [2018-11](#2018-11)
@@ -32,6 +34,15 @@ Don't worry about repeating material that was previously covered. The universe o
 If your presentation involves written materials (scripts, slides, etc.), it would be great if they could be archived in this repo. R Markdown documents are an ideal way to host such material, because they allow R scripts, their output, and any associated content to be rendered into a single, nicely-formatted HTML document. See a template for an R Markdown presentation [here](template.Rmd), and the resulting markdown document [here](template.md). Note that it's perfectly fine if you don't have the time or desire to use R Markdown.
 
 ## <a name="past-meetings"></a>Past meetings
+
+#### <a name="2019-03"></a>2019-03
+- Iris: a simulation problem
+- Patrick: working with spatial rasters [[link](2019-03/patrick-rasters.md)]
+
+#### <a name="2019-02"></a>2019-02
+- Rita: Let’s Map! How to make a map in R [[link](2019-02/rita-lets-map.md)]
+- Patrick: checking assumptions of glm models [[link](2019-02/patrick-glm-diagnostics.md)]
+- Simeon: model(comparison) in R [[link](2019-02/simeon-model-comparison.md)]
 
 #### <a name="2019-01"></a>2019-01
 - Brian: update on potential courses/training/workshops
