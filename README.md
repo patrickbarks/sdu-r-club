@@ -7,6 +7,7 @@ Material from monthly meetings of the R Club in Biology at SDU.
 ## Contents
 - [Info for presenters](#presenter-notes)
 - [Past meetings](#past-meetings)
+  - [2019-05](#2019-05)
   - [2019-03](#2019-03)
   - [2019-02](#2019-02)
   - [2019-01](#2019-01)
@@ -34,6 +35,12 @@ Don't worry about repeating material that was previously covered. The universe o
 If your presentation involves written materials (scripts, slides, etc.), it would be great if they could be archived in this repo. R Markdown documents are an ideal way to host such material, because they allow R scripts, their output, and any associated content to be rendered into a single, nicely-formatted HTML document. See a template for an R Markdown presentation [here](template.Rmd), and the resulting markdown document [here](template.md). Note that it's perfectly fine if you don't have the time or desire to use R Markdown.
 
 ## <a name="past-meetings"></a>Past meetings
+
+#### <a name="2019-05"></a>2019-05
+- Frederik: Hierarchical cluster analysis with `dendextend`
+- Lio: To be dead or not to be dead: ImageJ and R
+- Johannes: Labelling individual points in a plot using `identify()`
+- Patrick: Pattern-matching using regular expressions [[link](2019-05/patrick-regex.md)]
 
 #### <a name="2019-03"></a>2019-03
 - Iris: a simulation problem
